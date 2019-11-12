@@ -1,5 +1,8 @@
 <template>
-	<div class="found box"></div>
+	<div class="found box">
+
+		
+	</div>
 </template>
 
 <script>
