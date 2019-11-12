@@ -13,7 +13,8 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes:[
-	  Home,Mine,Item,Found
+    Home,Mine,Item,Found,
+    {path:"/",redirect:'/home'}
   ]
 })
 
