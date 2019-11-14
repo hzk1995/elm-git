@@ -35,14 +35,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-// import Detail from "./Detail"
-
-	export default {
-		components:{
-			// Detail
-		}	
-=======
 import Tabbar from "@/components/Tabbar"
 import Banner from "@/components/Banner"
 import Nav from "./Nav"
@@ -64,7 +56,6 @@ import Shop from "./Shop"
 			console.log(res.data.data.object_list)
         })
 		}
->>>>>>> 8ede350207d4db4a259960ac17d45dc1c789a78a
 	}
 </script>
 
