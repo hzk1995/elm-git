@@ -36,6 +36,7 @@ export default {
         this.$nextTick(()=>{
                 new Swiper(".banner",{
                     loop:true,
+                    autoplay:true,
                     pagination:{
                         el:".swiper-pagination"
                     }
