@@ -1,5 +1,6 @@
 <template>
   <div id="app">  
+    
 	  <router-view></router-view>
   </div>
 </template>
@@ -10,9 +11,11 @@
 </style>
 
 <script>
+
 export default {
-  components:{
-    
+ 
+  created(){
+    this.$router.push("/")
   }
 
 }
