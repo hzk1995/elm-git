@@ -27,13 +27,26 @@
 					{id:3,icon:'fa-file-text-o',txt:"订单",mark:'item'},
 					{id:4,icon:'fa-user',txt:"我的",mark:'mine'}
 				],
-				sel:this.$route.name
+				// sel:this.$route.name
 			}
 		},
 		methods:{
 			changesel(val){
 				this.sel = val
 			}
+		},
+		computed:{
+			
+				// return this.$route.name,
+			sel:{
+				get(){
+					return this.$route.name
+				},
+				set(){
+					this.$route.name
+				}
+			}
+
 		}
 	}
 </script>

@@ -1,9 +1,11 @@
 <template>
 	<div class="homebox">
-		<div class="top">
-			<i class="fa fa-map"></i><span>锦绣前程</span>
+		<div :class="['fbox',{fixed:isfixed}]">
+			<div class="top">
+				<i class="fa fa-map"></i><span>锦绣前程</span>
+			</div>
+			<mt-search placeholder="搜索饿了么商家、商品名称"></mt-search>
 		</div>
-		<mt-search placeholder="搜索饿了么商家、商品名称"></mt-search>
 		<Banner></Banner>
 		<Nav></Nav>
 		<div class="tou">
@@ -46,21 +48,58 @@ import Shop from "./Shop"
 		},
 		data(){
 			return {
-				shops:[]
+				shops:[],
+				limit:6,
+				page:1,
+				isfixed:false
 			}
 		},
 		created(){
-			 this.$http.get('/api/elm/items')
+			 this.$http.get('/api/elm/items',{
+				params:{
+              		limit:6,
+              		page:1
+              	}
+			 })
         .then(res=>{
 			this.shops = res.data.data.object_list
-			console.log(res.data.data.object_list)
+			// console.log(res.data.data.object_list)
         })
+		},
+		methods:{
+			listenscr(){
+				let scrheight = document.documentElement.scrollTop || document.body.scrollTop;
+				if(scrheight >= 300 && this.isfixed == false){
+					this.isfixed = true
+				}else if(scrheight < 300 && this.isfixed == true){
+					this.isfixed = false
+				}
+			}
+		},
+		beforeRouteLeave(to,from,next){
+			this.scrheight1 =  document.documentElement.scrollTop || document.body.scrollTop;
+			next()
+		},
+		activated(){
+			console.log(1111)
+			window.scrollTo(0,this.scrheight1)	
+			window.addEventListener("scroll",this.listenscr)
+			
+		},
+		deactivated(){
+			window.removeEventListener("scroll",this.listenscr)
 		}
 	}
 </script>
 
 <style lang="scss">
 	.homebox{
+		.fixed{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
 		.top{
 			height: 45px;
 			width: 100%;

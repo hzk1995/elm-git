@@ -16,13 +16,13 @@
         <div class="yhbox">
           <h6 
           class="free"
-          v-for="yh in shop.restaurant.activities"
+          v-for="yh in filteredItems"
           :key="yh.id"
           ><p :style="'background'+ ':' + '#' + yh.icon_color">{{yh.icon_name}}</p>{{yh.description}}</h6>
         </div>
       </div>
       <div class="shoplang">
-        <i class="fa fa-reorder"></i>
+        <i class="fa fa-reorder" @click="ismore=!ismore"></i>
         <p class="blue">蜂鸟专送</p>
         <p>3.14KM | 30分钟</p>
       </div>
@@ -32,6 +32,20 @@
 <script>
 export default {
   props:["shop"],
+  computed: {
+    filteredItems(){
+      if(this.ismore){
+         return this.shop.restaurant.activities.slice(0, 2)
+      }
+      return this.shop.restaurant.activities
+     
+    }
+  },
+  data(){
+    return {
+      ismore:true
+    }
+  },
   methods:{
     changeImg(url){
 			var aaa	= url.replace(/png/g,"png.png")
@@ -85,6 +99,9 @@ export default {
       div{
         margin-top: 5px;
       };
+      .fa{
+        cursor: pointer;
+      }
       .free{
         overflow: hidden;
         white-space: nowrap;
@@ -98,6 +115,7 @@ export default {
           color: #ffffff;
           text-align: center;
           margin-right: 8px;
+          line-height: 18px;
         }
       }
     };
