@@ -1,5 +1,7 @@
 <template>
-	<div class="mine box"></div>
+	<div class="mine box">
+		aaaaaa
+	</div>
 </template>
 
 <script>
