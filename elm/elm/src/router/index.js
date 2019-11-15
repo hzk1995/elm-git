@@ -10,7 +10,6 @@ import Found from './found'
 Vue.use(VueRouter)
 
 
- 
 
 const router = new VueRouter({
   routes:[
