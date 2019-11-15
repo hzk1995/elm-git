@@ -26,9 +26,9 @@ export default {
     data(){
         return {
             banners:[
-                {id:1,img:"http://img1.imgtn.bdimg.com/it/u=2498530398,3497901317&fm=26&gp=0.jpg"},
-                {id:2,img:"http://img1.imgtn.bdimg.com/it/u=2498530398,3497901317&fm=26&gp=0.jpg"},
-                {id:3,img:"http://img1.imgtn.bdimg.com/it/u=2498530398,3497901317&fm=26&gp=0.jpg"},
+                {id:1,img:"http://img3.imgtn.bdimg.com/it/u=568393000,4080851043&fm=26&gp=0.jpg"},
+                {id:2,img:"http://img5.imgtn.bdimg.com/it/u=3349823756,2154160771&fm=26&gp=0.jpg"},
+                {id:3,img:"http://img3.imgtn.bdimg.com/it/u=1632270366,1989614967&fm=26&gp=0.jpg"},
             ]
         }
     },
