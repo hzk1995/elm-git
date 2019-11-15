@@ -1,5 +1,8 @@
 <template>
-  <div class="shop">
+  <router-link class="shop"
+              :to="{name:'detail',params:{id:shop._id}}"
+              tag="div"
+  >
       <div class="shopimg">
         <img :src="changeImg(shop.restaurant.image_path)" alt="">
       </div>
@@ -26,7 +29,7 @@
         <p class="blue">蜂鸟专送</p>
         <p>3.14KM | 30分钟</p>
       </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -47,8 +50,18 @@ export default {
     }
   },
   methods:{
+    // changeImg(url){
+		// 	var aaa	= url.replace(/png/g,"png.png")
+		// 	var arr = aaa.split("")
+		// 	arr.splice(3,0,"/")
+		// 	arr.splice(1,0,"/")
+		// 	var obj = arr.join("")
+		// 	obj = "https://cube.elemecdn.com/" + obj + "?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed"
+		// 	return obj
+    // }
     changeImg(url){
 			var aaa	= url.replace(/png/g,"png.png")
+			aaa = aaa.replace(/jpeg/g,"jpeg.jpeg")
 			var arr = aaa.split("")
 			arr.splice(3,0,"/")
 			arr.splice(1,0,"/")

@@ -15,7 +15,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes:[
     Home,Mine,Item,Found,
-    {path:"/home/detail",name:"detail",component:()=>import("@/views/Home/Detail")},
+    {path:"/home/detail/:id",name:"detail",component:()=>import("@/views/Home/Detail")},
     {path:"/",redirect:'/home'},
     {path:"/mine/login",component:()=>import("@/views/Mine/login")},
   ]

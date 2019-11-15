@@ -6,7 +6,9 @@ import store from './store'
 import "swiper/css/swiper.min.css"
 
 import "@/stylesheets/main.scss"
-import { Navbar, TabItem,Search,Cell } from 'mint-ui';
+import { Navbar, TabItem,Search,Cell,InfiniteScroll } from 'mint-ui';
+
+Vue.use(InfiniteScroll);
 
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
