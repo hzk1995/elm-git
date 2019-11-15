@@ -17,6 +17,7 @@ export default {
  
   created(){
     this.$router.push("/")
+    this.$store.dispatch("initCars")
   }
 
 }

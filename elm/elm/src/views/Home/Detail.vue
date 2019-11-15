@@ -20,26 +20,32 @@
       </div>
       <div :class= "['content', {marginContent:isFixed}]">
           <div class="option">
-            <p v-for="i in 20" :key="i++">热销</p>
+            <p
+              :class="{color:(colorTitle == good.name)}"
+              v-for="good in goods" 
+              :key="good.id"
+              @click="select(good.name)"
+              >{{good.name}}
+            </p>
           </div>
           <div class="list">
-            <div class="item" v-for="i in 10" :key="i++">
+            <div class="item" v-for="item in items" :key="item.vfood_id">
               <p class= "itemPhoto">
-                <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=172425569,1210853800&fm=26&gp=0.jpg" alt="">
+                <img :src="changeImg(item.image_path)" alt="">
               </p>
               <div class="itembox">
-                <p class="title">我想来份1000ml水果捞</p>
-                <p class="synopsis">十余种应季新鲜水果外加秘制酸奶好吃到爆！主要原料：酸奶</p>
+                <p class="title">{{item.name}}</p>
+                <p class="synopsis">{{item.description}}</p>
                 <p class="appraise">
-                  <span>月售1194份</span>
+                  <span>月售{{item.month_sales}}份</span>
                   <span>好评率100%</span>
                 </p>
                 <p class="addition">
                   <span class="prace">￥{{prace}}</span>
                   <span class="addSubtract">
-                    <span v-if="isShow" @click="subtractCommodity" class="subtract">-</span>
-                    <span v-if="isShow" class="num">{{num}}</span>
-                    <span @click="addCommodity" class="add">+</span>
+                    <span  @click="subtractCommodity(item.item_id)" class="subtract">-</span>
+                    <span  class="num">{{item.num}}</span>
+                    <span @click="addGoodInCar(item)" class="add">+</span>
                   </span>
                 </p>
               </div>
@@ -49,7 +55,7 @@
       <div class= "car">
         <p class="map">
           <span class="fa fa-shopping-cart blueShopping"></span>
-          <span class="totalPraces"></span>
+          <span class="totalPraces">总量：{{num1}}</span>
         </p>
         <p class="word">去结算</p>
       </div>
@@ -57,34 +63,108 @@
 </template>
 
 <script>
-
+import {mapActions} from "vuex"
 export default {
   methods:{
-    addCommodity(){
-      this.num++
+    ...mapActions(["addGoodInCar"]),
+    changeImg(url){
+      var aaa = url.replace(/jpeg/g,"jpeg.jpeg")
+      aaa	= aaa.replace(/png/g,"png.png")
+			var arr = aaa.split("")
+			arr.splice(3,0,"/")
+			arr.splice(1,0,"/")
+			var obj = arr.join("")
+			obj = "https://cube.elemecdn.com/" + obj + "?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed"
+			return obj
+		},
+    select(val){
+        this.colorTitle = val
     },
-    subtractCommodity(){
-      this.num--
-    }
-  },
+  }, 
+  // methods:{
+  //   isShow(val){
+  //     if(val > 0){
+  //       return true
+  //     }else{
+  //       return false
+  //     }
+  //   },
+    // addCommodity(val){
+    //   for(var i =0;i<this.items.length;i++){
+    //     if(this.items[i].item_id == val){
+    //         this.items[i].num++
+    //         alert(this.items[i].num)
+    //     }
+    //     if(this.items[i].num > 0){
+    //         this.items[i].isShow = true  
+    //     }else{
+    //       this.items[i].isShow = false
+    //     }
+        
+    //   }
+      // console.log(val)
+      // console.log(this.addId)
+    // },
+    // add(val){
+    //   for(var i = 0;i<this.items.length;i++){
+    //     if(this.items[i].item_id == val){
+    //       this.items[i].num++
+    //     }
+    //     this.num1+=this.items[i].num
+    //   }
+      
+    // },
+    // subtractCommodity(val){
+    //   this.addId == val
+    //   // if(this.addId = val){
+    //   //   this.num--
+    //   // }
+    // },
+    
+  // },
   computed:{
-    isShow(){
-        if(this.num >= 1){
-         return true;
-      }
-      return  false
-    },
+    // isShow(){
+    //     for(var i = 0; i< this.items.length;i++){
+    //       if(this.items[i].num > 0){
+    //         this.items[i].isShow == true
+    //       }else{
+    //         this.items[i].isShow == false
+    //       }
+    //       return this.items[i].isShow
+    //     }
+    // },
     // return totalPrace += this.singleTotalPrace
   },
   data(){
     return{
+      num1:1,
+      addId:null,
+      colorTitle:"热销",
+      isColor:false,
       isFixed:false,
-      num:0,
       prace:38.8,
-      singleTotalPrace:this.num * this.prace,
+      goods:[],
+      items:[],
+      col:false,
+      // 
+    }
+  },
+  watch:{
+    items(val){
+
     }
   },
   created(){
+    this.$http.get("./list.json").then(res=>{
+      // console.log(res.data.JSON.menu)
+      this.goods = res.data.JSON.menu
+      this.items = res.data.JSON.menu[0].foods
+      for(var i=0;i<this.items.length;i++){
+        this.items[i].num = 1
+        this.items[i].isShow = false
+      }
+      // console.log(this.items)
+    })
     window.addEventListener("scroll",e=>{
       let sTop = document.documentElement.scrollTop || document.body.scrollTop;
       if(sTop>=145){
@@ -93,6 +173,9 @@ export default {
         this.isFixed = false
       }
     })
+  },
+  updated(){
+    console.log(this.items[1].num)
   }
 }
 </script>
@@ -119,7 +202,7 @@ export default {
         margin-top: 15px;
       }
       .content{
-        margin-bottom: 60px;
+        margin-bottom: 40px;
         display: flex;
         width: 100%;
         height: 100%;
@@ -127,17 +210,26 @@ export default {
           width: 20%;
           background: #eceaea;
           overflow: scroll;
-          height: 600px;
+          height: 620px;
           overflow-y: auto;
           p{
-            height:50px;
-            line-height: 50px;
-            text-align: center;
+            // height:50px;
+            // line-height: 50px;
+            // text-align: center;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            padding: 20px 8px;
+          }
+          .color{
+            background: #fff;
           }
         }
         .list{
           overflow: scroll;
-          height: 600px;
+          height: 620px;
           overflow-y: auto;
           width: 80%;
           .item{
