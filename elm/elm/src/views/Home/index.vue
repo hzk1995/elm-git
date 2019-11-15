@@ -1,5 +1,9 @@
 <template>
-	<div class="homebox">
+	<div class="homebox"
+		v-infinite-scroll="loadmore"
+		infinite-scroll-disabled="loading"
+		infinite-scroll-distance="10"
+	>
 		<div :class="['fbox',{fixed:isfixed}]">
 			<div class="top">
 				<i class="fa fa-map"></i><span>锦绣前程</span>
@@ -45,6 +49,7 @@ import Banner from "@/components/Banner"
 import Nav from "./Nav"
 import Shop from "./Shop"
 import Backtotop from "./Backtotop"
+import { Toast } from 'mint-ui';
 
 	export default {
 		 components:{
@@ -55,21 +60,15 @@ import Backtotop from "./Backtotop"
 				shops:[],
 				limit:6,
 				page:1,
-				isfixed:false
+				isfixed:false,
+				ismore:true,
+				loading:false
 			}
 		},
-		created(){
-			 this.$http.get('/api/elm/items',{
-				params:{
-              		limit:6,
-              		page:1
-              	}
-			 })
-        .then(res=>{
-			this.shops = res.data.data.object_list
-			// console.log(res.data.data.object_list)
-        })
-		},
+		// https://cube.elemecdn.com/4/58/ee62458498319f88cb0b146ef88e8jpeg.jpeg?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed
+		// created(){
+			
+		// },
 		methods:{
 			listenscr(){
 				let scrheight = document.documentElement.scrollTop || document.body.scrollTop;
@@ -78,6 +77,44 @@ import Backtotop from "./Backtotop"
 				}else if(scrheight < 300 && this.isfixed == true){
 					this.isfixed = false
 				}
+			},
+			loadmore(){
+				if(!this.ismore){
+					Toast({
+						message:'Not More',
+						duration:2000,
+						position:"bottom"
+						});
+					return false
+				}
+				this.conloge()
+			},
+			conloge(){
+				let {limit,page} = this;
+				let aaa = Toast({
+					message:'Loading Now',
+					iconClass: 'fa fa-spinner fa-pulse',
+					duration:-1
+				});
+				this.loading = true;
+				this.$http.get('/api/elm/home/item',{
+						params:{
+							limit,
+							page
+						}
+					})
+				.then(res=>{
+					this.shops = this.shops.concat(res.data.data.object_list)
+					this.loading = false;
+					aaa.close()
+					if(this.limit * this.page >= res.data.data.total){
+						console.log(22222)
+						this.ismore = false
+						return false
+					}
+					this.page++
+				})
+
 			}
 		},
 		beforeRouteLeave(to,from,next){
@@ -85,12 +122,14 @@ import Backtotop from "./Backtotop"
 			next()
 		},
 		activated(){
+			this.loading = false
 			window.scrollTo(0,this.scrheight1)	
 			window.addEventListener("scroll",this.listenscr)
 			
 		},
 		deactivated(){
 			window.removeEventListener("scroll",this.listenscr)
+			this.loading = true
 		}
 	}
 </script>

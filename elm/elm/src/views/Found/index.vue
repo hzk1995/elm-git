@@ -29,14 +29,14 @@
 			<div class="main">
 				<div class="main-list" 
 					v-for="product in products"
-					:key="product.id"
+					:key="product._id"
 				>
-					<img class="recommend-2Mcp6" src="https://cube.elemecdn.com/e/03/c1035cbd895fcd2d49f93bb57ddeejpeg.jpeg?x-oss-process=image/format,webp/resize,w_345,h_345,m_fixed">
-					<p class="main-title">劲脆鸡腿堡</p>
-					<p class="main-num">月售1247份，好评率97%</p>
-					<p class="main-price">￥13</p>
-					<span class="main-activity">满25减14</span>
-					<p class="main-address">阿堡仔炸鸡汉堡</p>
+					<img :src="changeImg(product.food.image_path)">
+					<p class="main-title">{{product.food.name}}</p>
+					<p class="main-num">月售{{product.food.month_sales}}份，好评率97%</p>
+					<p class="main-price">￥{{product.food.price}}</p>
+					<span class="main-activity">{{product.food.discount_activity}}</span>
+					<p class="main-address">{{product.food.restaurant_name}}</p>
 				</div>				
 			</div>
 		</div>
@@ -58,11 +58,22 @@ import Tabbar from "@/components/Tabbar"
 				products:[]
 			}
 		},
+		methods:{
+			changeImg(url){
+				var aaa	= url.replace(/png/g,"png.png")
+				aaa = aaa.replace(/jpeg/g,"jpeg.jpeg")
+				var arr = aaa.split("")
+				arr.splice(3,0,"/")
+				arr.splice(1,0,"/")
+				var obj = arr.join("")
+				obj = "https://cube.elemecdn.com/" + obj + "?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed"
+				return obj
+			}
+		},
 		created(){
-			this.$http.get("/api/elm/items").then(res=>{
+			this.$http.get("/api/elm/found").then(res=>{
 				this.products = res.data.data.object_list
 			})
-
 		}
 	}
 </script>
@@ -148,6 +159,7 @@ import Tabbar from "@/components/Tabbar"
 		.content{
 			background:#fff;
 			margin-top:10px;
+			padding-bottom:70px;
 			.content-top{
 				display: flex;
 				justify-content: center;

@@ -1,9 +1,15 @@
 <template>
   <div class="shop">
-      <div class="shopimg">
+      <router-link class="shopimg"
+                    :to="{name:'detail',params:{id:shop._id}}"
+                   tag="div"
+      >
         <img :src="changeImg(shop.restaurant.image_path)" alt="">
-      </div>
-      <div class="shopcon">
+      </router-link>
+      <router-link class="shopcon"
+                   :to="{name:'detail',params:{id:shop._id}}"
+                   tag="div"
+      >
         <p class="name">{{shop.restaurant.name}}</p>
         <div>
           <p>{{shop.restaurant.rating}}</p> |
@@ -20,7 +26,7 @@
           :key="yh.id"
           ><p :style="'background'+ ':' + '#' + yh.icon_color">{{yh.icon_name}}</p>{{yh.description}}</h6>
         </div>
-      </div>
+      </router-link>
       <div class="shoplang">
         <i class="fa fa-reorder" @click="ismore=!ismore"></i>
         <p class="blue">蜂鸟专送</p>
@@ -47,8 +53,18 @@ export default {
     }
   },
   methods:{
+    // changeImg(url){
+		// 	var aaa	= url.replace(/png/g,"png.png")
+		// 	var arr = aaa.split("")
+		// 	arr.splice(3,0,"/")
+		// 	arr.splice(1,0,"/")
+		// 	var obj = arr.join("")
+		// 	obj = "https://cube.elemecdn.com/" + obj + "?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed"
+		// 	return obj
+    // }
     changeImg(url){
 			var aaa	= url.replace(/png/g,"png.png")
+			aaa = aaa.replace(/jpeg/g,"jpeg.jpeg")
 			var arr = aaa.split("")
 			arr.splice(3,0,"/")
 			arr.splice(1,0,"/")
