@@ -55,12 +55,12 @@ import Shop from "./Shop"
 			}
 		},
 		created(){
-			 this.$http.get('/api/elm/items',{
+			this.$http.get('/api/elm/home/items',{
 				params:{
               		limit:6,
               		page:1
-              	}
-			 })
+            	}
+			})
         .then(res=>{
 			this.shops = res.data.data.object_list
 			// console.log(res.data.data.object_list)
