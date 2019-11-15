@@ -1,12 +1,15 @@
 <template>
-  <router-link class="shop"
-              :to="{name:'detail',params:{id:shop._id}}"
-              tag="div"
-  >
-      <div class="shopimg">
+  <div class="shop">
+      <router-link class="shopimg"
+                    :to="{name:'detail',params:{id:shop._id}}"
+                   tag="div"
+      >
         <img :src="changeImg(shop.restaurant.image_path)" alt="">
-      </div>
-      <div class="shopcon">
+      </router-link>
+      <router-link class="shopcon"
+                   :to="{name:'detail',params:{id:shop._id}}"
+                   tag="div"
+      >
         <p class="name">{{shop.restaurant.name}}</p>
         <div>
           <p>{{shop.restaurant.rating}}</p> |
@@ -23,13 +26,13 @@
           :key="yh.id"
           ><p :style="'background'+ ':' + '#' + yh.icon_color">{{yh.icon_name}}</p>{{yh.description}}</h6>
         </div>
-      </div>
+      </router-link>
       <div class="shoplang">
         <i class="fa fa-reorder" @click="ismore=!ismore"></i>
         <p class="blue">蜂鸟专送</p>
         <p>3.14KM | 30分钟</p>
       </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
