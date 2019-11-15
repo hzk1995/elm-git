@@ -66,7 +66,6 @@ export default {
     margin: 20px 10px 20px;
     display:flex;
     justify-content: space-around;
-    
     .shopimg{
       width: 65px;
       height: 65px;

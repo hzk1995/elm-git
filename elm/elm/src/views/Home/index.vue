@@ -32,6 +32,9 @@
 			:key="shop.id"
 			:shop="shop"
 		></Shop>
+		<Backtotop
+			:isfixed="isfixed"
+		></Backtotop>
 		<Tabbar></Tabbar>
 	</div>
 </template>
@@ -41,10 +44,11 @@ import Tabbar from "@/components/Tabbar"
 import Banner from "@/components/Banner"
 import Nav from "./Nav"
 import Shop from "./Shop"
+import Backtotop from "./Backtotop"
 
 	export default {
 		 components:{
-			Tabbar,Banner,Nav,Shop
+			Tabbar,Banner,Nav,Shop,Backtotop
 		},
 		data(){
 			return {
@@ -81,7 +85,6 @@ import Shop from "./Shop"
 			next()
 		},
 		activated(){
-			console.log(1111)
 			window.scrollTo(0,this.scrheight1)	
 			window.addEventListener("scroll",this.listenscr)
 			
@@ -94,6 +97,7 @@ import Shop from "./Shop"
 
 <style lang="scss">
 	.homebox{
+		padding-bottom: 50px;
 		.fixed{
 			position: fixed;
 			top: 0;
