@@ -1,7 +1,8 @@
 <template>
   <div class="detail">
-      <div class="Topbox"></div>
-      <img class ="masterGraph"  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=172425569,1210853800&fm=26&gp=0.jpg" alt="">
+      <div class="Topbox">
+        <img class ="masterGraph"  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=172425569,1210853800&fm=26&gp=0.jpg" alt="">
+      </div>
       <div class="ShopBrief">
           <p class="title">我想来份水果捞</p>
           <p class= "popularity">
@@ -10,14 +11,14 @@
             <span>蜂鸟快送约26分钟</span>
           </p>
       </div>
-      <div class="navbox">
+      <div :class="['navbox',{navfixe:isFixed}]">
         <mt-navbar>
         <mt-tab-item id="1">点餐</mt-tab-item>
         <mt-tab-item id="2">评价</mt-tab-item>
         <mt-tab-item id="3">商家</mt-tab-item>
         </mt-navbar>
       </div>
-      <div class= "content">
+      <div :class= "['content', {marginContent:isFixed}]">
           <div class="option">
             <p v-for="i in 20" :key="i++">热销</p>
           </div>
@@ -33,14 +34,24 @@
                   <span>月售1194份</span>
                   <span>好评率100%</span>
                 </p>
-                <span class="prace">￥38.8</span>
+                <p class="addition">
+                  <span class="prace">￥{{prace}}</span>
+                  <span class="addSubtract">
+                    <span v-if="isShow" @click="subtractCommodity" class="subtract">-</span>
+                    <span v-if="isShow" class="num">{{num}}</span>
+                    <span @click="addCommodity" class="add">+</span>
+                  </span>
+                </p>
               </div>
             </div>
           </div>
       </div>
       <div class= "car">
-        <p class="map"></p>
-        <p class="word">点我结算</p>
+        <p class="map">
+          <span class="fa fa-shopping-cart blueShopping"></span>
+          <span class="totalPraces"></span>
+        </p>
+        <p class="word">去结算</p>
       </div>
   </div>
 </template>
@@ -48,7 +59,41 @@
 <script>
 
 export default {
-
+  methods:{
+    addCommodity(){
+      this.num++
+    },
+    subtractCommodity(){
+      this.num--
+    }
+  },
+  computed:{
+    isShow(){
+        if(this.num >= 1){
+         return true;
+      }
+      return  false
+    },
+    // return totalPrace += this.singleTotalPrace
+  },
+  data(){
+    return{
+      isFixed:false,
+      num:0,
+      prace:38.8,
+      singleTotalPrace:this.num * this.prace,
+    }
+  },
+  created(){
+    window.addEventListener("scroll",e=>{
+      let sTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if(sTop>=145){
+        this.isFixed = true
+      }else{
+        this.isFixed = false
+      }
+    })
+  }
 }
 </script>
 
@@ -59,6 +104,19 @@ export default {
         width: 100%;
         height:100px;
         background: #847a7a;
+        .masterGraph{
+        position: absolute;
+          width: 80px;
+          height: 80px;
+          top: 10%;
+          left:50%;
+          -webkit-transform: translate(-50%,-50%);
+          -moz-transform: translate(-50%,-50%);
+          transform:translate(-50%,-50%);
+      }
+      }
+      .marginContent{
+        margin-top: 15px;
       }
       .content{
         margin-bottom: 60px;
@@ -116,26 +174,58 @@ export default {
                 font-size: 12px;
                 margin-bottom: 15px;
               }
-              .prace{
-                font-size:16px;
-                color: red;
+              .addition{
+                display: flex;
+                justify-content: space-between;
+                .prace{
+                  font-size:16px;
+                  color: red;
+                }
+                .addSubtract{
+                  // float: right;
+                  display: inline-block;
+                  .subtract{
+                    color: rgb(35, 149, 255);
+                    background: #fff;
+                    border: 1px solid rgb(35, 149, 255);
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    text-align: center;
+                    line-height: 18px;
+                    font-size: 18px;
+                    cursor: pointer;
+                  }
+                  .num{
+                    margin:0 10px;
+                  }
+                  .add{
+                    color: #fff;
+                    background: rgb(35, 149, 255);
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    text-align: center;
+                    line-height: 18px;
+                    font-size: 18px;
+                    cursor: pointer;
+                  }
+                }
               }
             }
           }
         }
       }
-      .masterGraph{
-        position: absolute;
-          width: 80px;
-          height: 80px;
-          top: 12%;
-          left:50%;
-          -webkit-transform: translate(-50%,-50%);
-          -moz-transform: translate(-50%,-50%);
-          transform:translate(-50%,-50%);
-      }
       .navbox{
         border-bottom: 1px solid #999;
+      }
+      .navfixe{
+        position: fixed;
+        top:0;
+        left: 0;
+        width:100%;
       }
       .ShopBrief{
         width: 100%;
@@ -164,21 +254,40 @@ export default {
         position: fixed;
         bottom: 0;
         left: 0;
-        height: 60px;
+        height: 50px;
         width: 100%;
         display: flex;
         .map{
-          background:#6e6d6d;
+          background:rgba(61,61,63,.9);
           width: 70%;
+          position: relative;
+          .fa-shopping-cart{
+            display: inline-block;
+            font-size: 30px;
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 10px;
+            top: -10px;
+            border: 5px solid rgba(61,61,63,.9);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            background: #363636;
+          }
+          .blueShopping{
+            background: rgb(35, 149, 255);
+            color: #fff;
+          }
         }
         .word{
           background: #38ca73;
           width: 30%;
           color:#fff;
           text-align: center;
-          font-size: 20px;
+          font-size: 14px;
           font-weight: 700;
-          line-height:60px;
+          line-height:50px;
         }
       }
     }
