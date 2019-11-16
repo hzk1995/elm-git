@@ -43,8 +43,8 @@
                 <p class="addition">
                   <span class="prace">￥{{prace}}</span>
                   <span class="addSubtract">
-                    <span  @click="subtractCommodity(item.item_id)" class="subtract">-</span>
-                    <span  class="num">{{item.num}}</span>
+                    <span  class="subtract" @click="reduceGoodInCar(item)">-·</span>
+                    <span  class="num">{{i.num}}</span>
                     <span @click="addGoodInCar(item)" class="add">+</span>
                   </span>
                 </p>
@@ -55,18 +55,18 @@
       <div class= "car">
         <p class="map">
           <span class="fa fa-shopping-cart blueShopping"></span>
-          <span class="totalPraces">总量：{{num1}}</span>
+          <span class="totalPraces"></span>
         </p>
-        <p class="word">去结算</p>
+        <router-link to="/car" tag="p" class="word">去结算</router-link>
       </div>
   </div>
 </template>
 
 <script>
-import {mapActions} from "vuex"
+import {mapActions,mapState} from "vuex"
 export default {
   methods:{
-    ...mapActions(["addGoodInCar"]),
+    ...mapActions(["addGoodInCar","reduceGoodInCar"]),
     changeImg(url){
       var aaa = url.replace(/jpeg/g,"jpeg.jpeg")
       aaa	= aaa.replace(/png/g,"png.png")
@@ -79,6 +79,7 @@ export default {
 		},
     select(val){
         this.colorTitle = val
+        
     },
   }, 
   // methods:{
@@ -123,6 +124,9 @@ export default {
     
   // },
   computed:{
+    ...mapState({
+            i:state=>state.myCar.cars
+        })
     // isShow(){
     //     for(var i = 0; i< this.items.length;i++){
     //       if(this.items[i].num > 0){
@@ -137,7 +141,6 @@ export default {
   },
   data(){
     return{
-      num1:1,
       addId:null,
       colorTitle:"热销",
       isColor:false,
@@ -149,20 +152,15 @@ export default {
       // 
     }
   },
-  watch:{
-    items(val){
-
-    }
-  },
   created(){
     this.$http.get("./list.json").then(res=>{
       // console.log(res.data.JSON.menu)
       this.goods = res.data.JSON.menu
       this.items = res.data.JSON.menu[0].foods
-      for(var i=0;i<this.items.length;i++){
-        this.items[i].num = 1
-        this.items[i].isShow = false
-      }
+      // for(var i=0;i<this.items.length;i++){
+      //   this.items[i].num = 1
+      //   this.items[i].isShow = false
+      // }
       // console.log(this.items)
     })
     window.addEventListener("scroll",e=>{
@@ -174,9 +172,6 @@ export default {
       }
     })
   },
-  updated(){
-    console.log(this.items[1].num)
-  }
 }
 </script>
 
@@ -232,6 +227,7 @@ export default {
           height: 620px;
           overflow-y: auto;
           width: 80%;
+          margin-bottom: 30px;
           .item{
             margin: 10px 10px;
             display: flex;

@@ -16,6 +16,7 @@ const router = new VueRouter({
   routes:[
     Home,Mine,Item,Found,Evaluate,
     {path:"/home/detail/:id",name:"detail",component:()=>import("@/views/Home/Detail")},
+    {path:"/car",name:"car",component:()=>import("@/views/Home/Car")},
     {path:"/",redirect:'/home'},
     {path:"/mine/login",component:()=>import("@/views/Mine/login")},
   ]
